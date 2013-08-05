@@ -9,7 +9,10 @@
 
 ###Скриншоты:
 ![Screenshot0](http://lite.glebcha.ru/img/wascomments.png "Screenshot0")
+* * *
 ![Screenshot1](http://lite.glebcha.ru/img/iscomments.png "Screenshot1")
+* * *
 ![Screenshot2](http://lite.glebcha.ru/img/wasimg.png "Screenshot2")
+* * *
 ![Screenshot3](http://lite.glebcha.ru/img/isimg.png "Screenshot3")
 
