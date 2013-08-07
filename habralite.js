@@ -91,12 +91,13 @@
                 var replies = comment.querySelectorAll('.reply_comments .comment_body');
                 if (replies.length > 0) {
                     combody = getChildrenByClassName(comment, 'comment_body')[0];
+                    replylink = getChildrenByClassName(combody, 'reply')[0];
                     if (combody) {
                         var btn = document.createElement("input");
                         btn.type = "button";
                         btn.className = "hidereplies";
                         btn.value = replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']);
-                        combody.appendChild(btn);
+                        replylink.appendChild(btn);
                     }
                 }
             }
@@ -127,7 +128,7 @@
                 var btn = buttons[a];
                 btn.onclick = function (event) {
                     var btn = event.currentTarget;
-                    var comments = btn.parentNode.parentNode.querySelectorAll(".reply_comments");
+                    var comments = btn.parentNode.parentNode.parentNode.querySelectorAll(".reply_comments");
                     for (var y = 0; y < comments.length; y++) {
                         var reply = comments[y];
                         reply.style.display = (reply.style.display != 'none' ? 'none' : 'block');
