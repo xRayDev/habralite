@@ -14,7 +14,7 @@
         hideReply();
 
         function hideImages() {
-            var images = document.querySelectorAll(".content > img, .content > div > img, .content > div > div > img, .content > a > img, .content > a > div > img, .content > table > tbody > tr> td> a > img, .content > table > tbody > tr> td> img, .content > ul > li > img, .content > ul > li > table > tbody > tr> td> img, .message > a > img, .message > img, .sidebar_right > .banner_300x500, .sidebar_right > #htmlblock_placeholder");
+            var images = document.querySelectorAll(".content img, .sidebar_right > .banner_300x500, .sidebar_right > #htmlblock_placeholder");
             for (var m = 0; m < images.length; m++) {
                 var image = images[m];
                 image.style.display = "none";
@@ -28,7 +28,7 @@
 
     function imgPosts() {
 
-        var imgs = document.querySelectorAll(".content > img, .content > div > img, .content > div > div > img, .content > a > img, .content > a > div > img, .content > table > tbody > tr> td> a > img, .content > table > tbody > tr> td> img, .content > ul > li > img, .content > ul > li > table > tbody > tr> td> img, .message > a > img, .message > img");
+        var imgs = document.querySelectorAll(".content img");
         var button = document.createElement("input");
         button.type = "button";
         button.className = "habraimage";
