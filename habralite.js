@@ -87,6 +87,9 @@ function commentsBtnClick (event) {
     /* Make buton fixed */
     addCSSRule('.habraimage', 'position:fixed; right: 6%; z-index: 1;');
 
+    /* Margin-bottom for buttons block */
+    addCSSRule('.reply', 'margin-bottom: 1em;');
+
     /* Add buttons to toggle comments visibility */
     var comments = document.querySelectorAll('.comments_list > .comment_item'),
         comment, combody;
