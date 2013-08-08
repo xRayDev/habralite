@@ -111,11 +111,13 @@
 
             }
 
-            addCSSRule(document.styleSheets[0], ".hidereplies", "height: 2em; margin-bottom: 2em; border-radius: 6px; background-image: -webkit-linear-gradient(top, #eeeeee, #e1e1e1); background-image: -o-linear-gradient(top, #eeeeee, #e1e1e1); background-image: linear-gradient(top, #eeeeee, #e1e1e1); background-image: -moz-linear-gradient(top, #eeeeee, #e1e1e1); background-repeat: repeat-x; border: 1px solid #d9d8d8; border-color: #d9d8d8 #cccbcb #aeaeae; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8); -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1);");
+            addCSSRule(document.styleSheets[0], ".hidereplies", "height: 2em; border-radius: 6px; background-image: -webkit-linear-gradient(top, #eeeeee, #e1e1e1); background-image: -o-linear-gradient(top, #eeeeee, #e1e1e1); background-image: linear-gradient(top, #eeeeee, #e1e1e1); background-image: -moz-linear-gradient(top, #eeeeee, #e1e1e1); background-repeat: repeat-x; border: 1px solid #d9d8d8; border-color: #d9d8d8 #cccbcb #aeaeae; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8); -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1);");
 
             addCSSRule(document.styleSheets[0], ".hidereplies:hover", "background-color: #fcfcfc; background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fcfcfc), to(#e8e8e8));background-image: -webkit-linear-gradient(top, #fcfcfc, #e8e8e8); background-image: linear-gradient(top, #fcfcfc, #e8e8e8); background-image: -moz-linear-gradient(top, #fcfcfc, #e8e8e8);background-repeat: repeat-x; text-decoration: none;");
 
             addCSSRule(document.styleSheets[0], ".hidereplies:active", "-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2); -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2); background: #e1e1e1 !important; border: 1px solid #a4a7ac; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border-color: #a4a7ac #d2d3d4 #e1e1e1; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);");
+            
+            addCSSRule(document.styleSheets[0], ".reply", "margin-bottom: 1em;");
 
         }
         addBtn();
