@@ -89,6 +89,9 @@ function commentsBtnClick (event) {
 
     /* Margin-bottom for buttons block */
     addCSSRule('.reply', 'margin-bottom: 1em;');
+    
+    /* White list to always show images */
+    addCSSRule('.spoiler_text img', 'display: block !important;');
 
     /* Add buttons to toggle comments visibility */
     var comments = document.querySelectorAll('.comments_list > .comment_item'),
