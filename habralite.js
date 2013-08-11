@@ -29,6 +29,13 @@ function hideNode (nodes) {
         node.style.display = 'none';
     }
 }
+/* Hide single link with a matching word in url */
+function hideLinks(links, rule) {
+for (i = 0; i < links.length; i++) {
+      var link = links[i];
+      if (link.href.indexOf(rule) != -1) {link.style.display = 'none'};
+    }
+}
 /* Hide nodeLists provided as array */
 function hideNodes (nodes) {
     if( Object.prototype.toString.call( nodes ) === '[object Array]' ) {
@@ -73,14 +80,20 @@ function commentsBtnClick (event) {
 
 /* C-style Main() =) */
 (function(){
-    /* Sets of {NodeList} elements to operate with */
+    /* Set of {NodeList} elements to operate with */
     var allReplies = document.querySelectorAll('.reply_comments');
     var sidebarImgs = document.querySelectorAll('.sidebar_right > .banner_300x500, .sidebar_right > #htmlblock_placeholder');
     var contentImgs = document.querySelectorAll('.content img, .message img');
+    
+    /* Set of {hideLinks} elements to operate with */
+    var banners = document.querySelectorAll('body > a');
+    
+    /* Hide all links matching specified rule (adriver banners etc.) */
+    hideLinks(banners, 'adriver');
 
     /* Hide all images and nested replies by default */
     hideNodes([allReplies, sidebarImgs, contentImgs]);
-
+    
     /* Add button to toggle images visibility */
     var newImgBtn = createBtn('habraimage', '◄ Показать изображения', function (event) {event.preventDefault(); toggleElements(contentImgs);});
     document.querySelectorAll('.main_menu')[0].appendChild(newImgBtn);
