@@ -84,19 +84,16 @@ function commentsBtnClick (event) {
     var allReplies = document.querySelectorAll('.reply_comments');
     var sidebarImgs = document.querySelectorAll('.sidebar_right > .banner_300x500, .sidebar_right > #htmlblock_placeholder');
     var contentImgs = document.querySelectorAll('.content img, .message img');
-    var usersBanned = document.querySelectorAll('.author_banned');
-    var postsBanners = document.querySelectorAll('.content_left > .post_inner_banner');
+    var userBanned = document.querySelectorAll('.author_banned');
     
     /* Set of {hideLinks} elements to operate with */
     var banners = document.querySelectorAll('body > a');
     
     /* Hide all links matching specified rule (adriver banners etc.) */
     hideLinks(banners, 'adriver');
-    setTimeout(function() { hideNodes(postsBanners); }, 400);
 
     /* Hide all images and nested replies by default */
-    hideNodes([allReplies, sidebarImgs, contentImgs, usersBanned]);
-    
+    hideNodes([allReplies, sidebarImgs, contentImgs, userBanned]);
     
     /* Add button to toggle images visibility */
     var newImgBtn = createBtn('habraimage', '◄ Показать изображения', function (event) {event.preventDefault(); toggleElements(contentImgs);});
