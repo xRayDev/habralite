@@ -115,7 +115,7 @@ function clickPm(event) {
     /* Make buton fixed */
     addCSSRule('.habraimage', 'position:fixed; right: 6%; z-index: 1;');
     
-    /* Make buton fixed */
+    /* Style for send private message link */
     addCSSRule('.pmlink', 'float: left; margin-top: 0.65em; height: 1em; width: 2em; background: url(/images/user_message.gif) no-repeat; background-size: 2em;');
 
     /* Margin-bottom for buttons block */
