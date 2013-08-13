@@ -7,14 +7,19 @@
 
 * Кнопка, раскрывающая ответы к комментарию и показывающая их число
 * "Плавающая" кнопка показа скрытых изображений для поста и комментариев
+* Кнопка отправки личного сообщения пользователю из комментария
+* Фильтрация комментариев забаненных пользователей (НЛО)
+* Изображения под спойлером не скрываются
 * Рекламные блоки всегда скрыты
 
 ###Скриншоты:
-![Screenshot0](http://lite.glebcha.ru/img/wascomments.png "Screenshot0")
+![Screenshot0](http://lite.glebcha.ru/img/private_message.png "Screenshot0")
 * * *
-![Screenshot1](http://lite.glebcha.ru/img/iscomments.png "Screenshot1")
+![Screenshot1](http://lite.glebcha.ru/img/wascomments.png "Screenshot1")
 * * *
-![Screenshot2](http://lite.glebcha.ru/img/wasimg.png "Screenshot2")
+![Screenshot2](http://lite.glebcha.ru/img/iscomments.png "Screenshot2")
 * * *
-![Screenshot3](http://lite.glebcha.ru/img/isimg.png "Screenshot3")
+![Screenshot3](http://lite.glebcha.ru/img/wasimg.png "Screenshot3")
+* * *
+![Screenshot4](http://lite.glebcha.ru/img/isimg.png "Screenshot4")
 
