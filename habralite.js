@@ -31,7 +31,7 @@ function hideNode (nodes) {
 }
 /* Hide single link with a matching word in url */
 function hideLinks(links, rule) {
-for (i = 0; i < links.length; i++) {
+for (var i = 0; i < links.length; i++) {
       var link = links[i];
       if (link.href.indexOf(rule) != -1) {link.style.display = 'none'};
     }
@@ -54,16 +54,16 @@ function toggleElements (elements) {
         element.style.display = (element.style.display != 'none' ? 'none' : 'block');
     }
 }
-/* Create a button ( span.buttons > a.button ) */
-function createBtn (className, value, onclick) {
-    className = className || 'button';
-    value = value || 'Button';
+/* Create a button ( span > a ) */
+function createBtn (className, value, btnClass, containerClass, onclick) {
+    className = className || '';
+    value = value || '';
     onclick = onclick || function (event) {};
 
     var newContainer = document.createElement('span');
-        newContainer.className = 'buttons';
+        newContainer.className = containerClass;
     var newBtn = document.createElement('a');
-        newBtn.className = className + ' button';
+        newBtn.className = className + btnClass;
         newBtn.appendChild(document.createTextNode(value));
         newBtn.href="#";
         newBtn.onclick = onclick;
@@ -74,8 +74,14 @@ function createBtn (className, value, onclick) {
 function commentsBtnClick (event) {
     event.preventDefault();
     var btn = event.currentTarget;
-    var comments = btn.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.reply_comments');
+    var comments = btn.parentElement.parentElement.parentElement.parentElement.querySelectorAll('.reply_comments');
     toggleElements(comments);
+}
+/* Private message link event handler */
+function clickPm(event) { 
+        event.preventDefault();
+        var username = event.target.parentElement.parentElement.parentElement.querySelector('a.username').innerText;
+        window.location.pathname = '/conversations/' + username;
 }
 
 /* C-style Main() =) */
@@ -85,6 +91,7 @@ function commentsBtnClick (event) {
     var sidebarImgs = document.querySelectorAll('.sidebar_right > .banner_300x500, .sidebar_right > #htmlblock_placeholder');
     var contentImgs = document.querySelectorAll('.content img, .message img');
     var userBanned = document.querySelectorAll('.author_banned');
+    var infobars = document.querySelectorAll('.to_chidren');
     
     /* Set of {hideLinks} elements to operate with */
     var banners = document.querySelectorAll('body > a');
@@ -96,10 +103,20 @@ function commentsBtnClick (event) {
     hideNodes([allReplies, sidebarImgs, contentImgs, userBanned]);
     
     /* Add button to toggle images visibility */
-    var newImgBtn = createBtn('habraimage', '◄ Показать изображения', function (event) {event.preventDefault(); toggleElements(contentImgs);});
+    var newImgBtn = createBtn('habraimage', '◄ Показать изображения', ' button', 'buttons', function (event) {event.preventDefault(); toggleElements(contentImgs);});
     document.querySelectorAll('.main_menu')[0].appendChild(newImgBtn);
+    
+    /* Add private message link */
+    for (i = 0; i < infobars.length; i++) {
+    var pmLink = createBtn('pmlink', '', ' reply_link', 'container', clickPm);
+    infobars[i].appendChild(pmLink);
+    }
+    
     /* Make buton fixed */
     addCSSRule('.habraimage', 'position:fixed; right: 6%; z-index: 1;');
+    
+    /* Make buton fixed */
+    addCSSRule('.pmlink', 'float: left; margin-top: 0.65em; height: 1em; width: 2em; background: url(/images/user_message.gif) no-repeat; background-size: 2em;');
 
     /* Margin-bottom for buttons block */
     addCSSRule('.reply', 'margin-bottom: 1em;');
@@ -117,7 +134,7 @@ function commentsBtnClick (event) {
             combody = getChildrenByClassName(comment, 'comment_body')[0];
             replylink = getChildrenByClassName(combody, 'reply')[0];
             if (combody) {
-                var newBtn = createBtn('hidereplies', replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']), commentsBtnClick);
+                var newBtn = createBtn('hidereplies', replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']), ' button', 'buttons', commentsBtnClick);
                 replylink.appendChild(newBtn);
             }
         }
