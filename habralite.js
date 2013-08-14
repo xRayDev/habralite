@@ -30,10 +30,10 @@ function hideNode (nodes) {
     }
 }
 /* Hide single link with a matching word in url */
-function hideLinks(links, rule) {
+function hideLinks(links, tag, rule) {
 for (var i = 0; i < links.length; i++) {
       var link = links[i];
-      if (link.href.indexOf(rule) != -1) {link.style.display = 'none'};
+      if (link.tag.indexOf(rule) != -1) {link.style.display = 'none'};
     }
 }
 /* Hide nodeLists provided as array */
@@ -94,10 +94,10 @@ function clickPm(event) {
     var infobars = document.querySelectorAll('.to_chidren');
     
     /* Set of {hideLinks} elements to operate with */
-    var banners = document.querySelectorAll('body > a');
+    var linkBanners = document.querySelectorAll('body > a');
     
     /* Hide all links matching specified rule (adriver banners etc.) */
-    hideLinks(banners, 'adriver');
+    hideLinks(linkBanners, 'href', 'adriver');
 
     /* Hide all images and nested replies by default */
     hideNodes([allReplies, sidebarImgs, contentImgs, userBanned]);
@@ -123,6 +123,10 @@ function clickPm(event) {
     
     /* White list to always show images */
     addCSSRule('.spoiler_text img', 'display: block !important;');
+    
+    /* Black list to always hide images */
+    addCSSRule('.post_inner_banner', 'display: none !important;');
+    addCSSRule('.banner_special', 'display: none !important;');
 
     /* Add buttons to toggle comments visibility */
     var comments = document.querySelectorAll('.comments_list > .comment_item'),
