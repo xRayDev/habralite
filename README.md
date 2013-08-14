@@ -13,13 +13,13 @@
 * Рекламные блоки всегда скрыты
 
 ###Скриншоты:
-![Screenshot0](http://lite.glebcha.ru/img/private_message.png "Screenshot0")
+![Screenshot0](http://lite.glebcha.ru/img/pm.png "отправка личного сообщения")
 * * *
-![Screenshot1](http://lite.glebcha.ru/img/wascomments.png "Screenshot1")
+![Screenshot1](http://lite.glebcha.ru/img/wascomments.png "комментарии - до")
 * * *
-![Screenshot2](http://lite.glebcha.ru/img/iscomments.png "Screenshot2")
+![Screenshot2](http://lite.glebcha.ru/img/iscomments.png "комментарии - после")
 * * *
-![Screenshot3](http://lite.glebcha.ru/img/wasimg.png "Screenshot3")
+![Screenshot3](http://lite.glebcha.ru/img/wasimg.png "изображения - до")
 * * *
-![Screenshot4](http://lite.glebcha.ru/img/isimg.png "Screenshot4")
+![Screenshot4](http://lite.glebcha.ru/img/isimg.png "изображения - после")
 
