@@ -29,13 +29,6 @@ function hideNode (nodes) {
         node.style.display = 'none';
     }
 }
-/* Hide single link with a matching word in url */
-function hideLinks(links, tag, rule) {
-for (var i = 0; i < links.length; i++) {
-      var link = links[i];
-      if (link.tag.indexOf(rule) != -1) {link.style.display = 'none'};
-    }
-}
 /* Hide nodeLists provided as array */
 function hideNodes (nodes) {
     if( Object.prototype.toString.call( nodes ) === '[object Array]' ) {
@@ -83,8 +76,31 @@ function clickPm(event) {
         var username = event.target.parentElement.parentElement.parentElement.querySelector('a.username').innerText;
         window.location.pathname = '/conversations/' + username;
 }
+/* Get user info from XML */
+function karmaCounter() {
+    
+    var xmlhttp=new XMLHttpRequest();
+    xmlhttp.overrideMimeType('text/xml');
+    var userBlock = document.querySelectorAll('.top > .username')[0].innerText;
+    var userpanelTop = document.querySelectorAll('.userpanel > .top')[0];
+    var karmaCharge = document.createElement('a');
+    karmaCharge.className = 'count karma';
+    xmlhttp.onreadystatechange=function() {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200) {  
+        var counter = xmlhttp.responseXML.querySelectorAll('karma')[0].firstChild;
+        var rating = xmlhttp.responseXML.querySelectorAll('rating')[0].firstChild;
+        karmaCharge.innerText = 'карма ';
+        karmaCharge.appendChild(counter);
+        karmaCharge.innerText += ', рейтинг ';
+        karmaCharge.appendChild(rating);
+        userpanelTop.insertBefore(karmaCharge, userpanelTop.firstChild.nextSibling.nextSibling);
+      }
+    }
+    xmlhttp.open("GET",'/api/profile/' + userBlock,true);
+    xmlhttp.send();
+}
 
-/* C-style Main() =) */
+/* Main */
 (function(){
     /* Set of {NodeList} elements to operate with */
     var allReplies = document.querySelectorAll('.reply_comments');
@@ -92,12 +108,6 @@ function clickPm(event) {
     var contentImgs = document.querySelectorAll('.content img, .message img');
     var userBanned = document.querySelectorAll('.author_banned');
     var infobars = document.querySelectorAll('.to_chidren');
-    
-    /* Set of {hideLinks} elements to operate with */
-    var linkBanners = document.querySelectorAll('body > a');
-    
-    /* Hide all links matching specified rule (adriver banners etc.) */
-    hideLinks(linkBanners, 'href', 'adriver');
 
     /* Hide all images and nested replies by default */
     hideNodes([allReplies, sidebarImgs, contentImgs, userBanned]);
@@ -112,8 +122,29 @@ function clickPm(event) {
     infobars[i].appendChild(pmLink);
     }
     
+    /* Define userpanel */
+    var userpanel = document.querySelectorAll('.userpanel')[0];
+    var userpanelTop = document.querySelectorAll('.userpanel > .top')[0];
+    var userpanelBottom = document.querySelectorAll('.userpanel > .bottom')[0];
+    var karmaDescription = document.querySelectorAll('.charge')[0];
+
+    if (userpanelBottom != null) {
+        userpanelTop.innerHTML += userpanelBottom.innerHTML;
+        userpanel.removeChild(userpanelBottom);
+        userpanel.removeChild(karmaDescription);
+        karmaCounter();
+    };
+    if (userpanelTop == null) {
+	    var top = document.createElement('div');
+	    top.className = 'top';
+	    top.innerHTML = userpanel.innerHTML;
+	    userpanel.innerHTML = null;
+	    userpanel.appendChild(top);
+    };
+    
+    
     /* Make buton fixed */
-    addCSSRule('.habraimage', 'position:fixed; right: 6%; z-index: 1;');
+    addCSSRule('.habraimage', 'position:fixed; right: 6%; z-index: 2;');
     
     /* Style for send private message link */
     addCSSRule('.pmlink', 'float: left; margin-top: 0.65em; height: 1em; width: 2em; background: url(/images/user_message.gif) no-repeat; background-size: 2em;');
@@ -121,6 +152,16 @@ function clickPm(event) {
     /* Margin-bottom for buttons block */
     addCSSRule('.reply', 'margin-bottom: 1em;');
     
+    /* User panel styling */
+    addCSSRule('.logo', 'display: none !important;');
+    addCSSRule('.main_menu', 'margin-top: 1em;');
+    addCSSRule('.userpanel .top', 'width: 98em; position: fixed;  z-index: 1; background-image: -webkit-linear-gradient(top, #d3e2f0, #9bb9d3); background-image: -moz-linear-gradient(top, #d3e2f0, #9bb9d3); background-image: linear-gradient(top, #d3e2f0, #9bb9d3); top: 0; padding: 1em; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; opacity: 0.8;');
+    addCSSRule('.userpanel a', 'font-size: 14px; text-decoration: none; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);');
+    addCSSRule('a.count', ' background: rgba(255,255,255, 0.5); padding: 3px; border-radius: 4px;');
+    addCSSRule('#header .userpanel a.username', 'margin-right: 1em !important;');
+    addCSSRule('.search', 'margin-top: -2em;');
+    addCSSRule('.search form', 'position: fixed; z-index: 2;');
+
     /* White list to always show images */
     addCSSRule('.spoiler_text img', 'display: block !important;');
     
