@@ -127,7 +127,9 @@ function karmaCounter() {
     var userpanelTop = document.querySelectorAll('.userpanel > .top')[0];
     var userpanelBottom = document.querySelectorAll('.userpanel > .bottom')[0];
     var karmaDescription = document.querySelectorAll('.charge')[0];
+    var companyHeader = document.querySelectorAll('#header_mouse_activity')[0];
 
+if (companyHeader == null) {
     if (userpanelBottom != null) {
         userpanelTop.innerHTML += userpanelBottom.innerHTML;
         userpanel.removeChild(userpanelBottom);
@@ -141,9 +143,9 @@ function karmaCounter() {
 	    userpanel.innerHTML = null;
 	    userpanel.appendChild(top);
     };
+}    
     
-    
-    /* Make buton fixed */
+    /* Make button fixed */
     addCSSRule('.habraimage', 'position:fixed; right: 6%; z-index: 2;');
     
     /* Style for send private message link */
