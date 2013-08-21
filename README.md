@@ -5,6 +5,7 @@
 
 ###Что умеет в текущем релизе:
 
+* Пользовательская панель с отображением текущих кармы и рейтинга;
 * Кнопка, раскрывающая ответы к комментарию и показывающая их число
 * "Плавающая" кнопка показа скрытых изображений для поста и комментариев
 * Кнопка отправки личного сообщения пользователю из комментария
@@ -13,13 +14,15 @@
 * Рекламные блоки всегда скрыты
 
 ###Скриншоты:
-![Screenshot0](http://lite.glebcha.ru/img/pm.png "отправка личного сообщения")
+![Screenshot0](http://lite.glebcha.ru/img/userbar.png "юзербар")
 * * *
-![Screenshot1](http://lite.glebcha.ru/img/wascomments.png "комментарии - до")
+![Screenshot1](http://lite.glebcha.ru/img/pm.png "отправка личного сообщения")
 * * *
-![Screenshot2](http://lite.glebcha.ru/img/iscomments.png "комментарии - после")
+![Screenshot2](http://lite.glebcha.ru/img/wascomments.png "комментарии - до")
 * * *
-![Screenshot3](http://lite.glebcha.ru/img/wasimg.png "изображения - до")
+![Screenshot3](http://lite.glebcha.ru/img/iscomments.png "комментарии - после")
 * * *
-![Screenshot4](http://lite.glebcha.ru/img/isimg.png "изображения - после")
+![Screenshot4](http://lite.glebcha.ru/img/wasimg.png "изображения - до")
+* * *
+![Screenshot5](http://lite.glebcha.ru/img/isimg.png "изображения - после")
 
