@@ -84,6 +84,7 @@ function karmaCounter() {
     var userBlock = document.querySelectorAll('.top > .username')[0].innerText;
     var userpanelTop = document.querySelectorAll('.userpanel > .top')[0];
     var karmaCharge = document.createElement('a');
+    karmaCharge.href = 'http://habrahabr.ru/users/' + userBlock;
     karmaCharge.className = 'count karma';
     xmlhttp.onreadystatechange=function() {
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {  
