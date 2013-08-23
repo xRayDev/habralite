@@ -79,7 +79,7 @@ function clickPm(event) {
 /* Get user info from XML */
 function karmaCounter() {
     
-    var xmlhttp=new XMLHttpRequest();
+    var xmlhttp = new XMLHttpRequest();
     xmlhttp.overrideMimeType('text/xml');
     var userBlock = document.querySelectorAll('.top > .username')[0].innerText;
     var userpanelTop = document.querySelectorAll('.userpanel > .top')[0];
@@ -87,7 +87,7 @@ function karmaCounter() {
     karmaCharge.href = 'http://habrahabr.ru/users/' + userBlock;
     karmaCharge.className = 'count karma';
     xmlhttp.onreadystatechange=function() {
-      if (xmlhttp.readyState==4 && xmlhttp.status==200) {  
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {  
         var counter = xmlhttp.responseXML.querySelectorAll('karma')[0].firstChild;
         var rating = xmlhttp.responseXML.querySelectorAll('rating')[0].firstChild;
         karmaCharge.innerText = 'карма ';
@@ -164,6 +164,7 @@ if (companyHeader == null) {
     addCSSRule('#header .userpanel a.username', 'margin-right: 1em !important;');
     addCSSRule('.search', 'margin-top: -2em;');
     addCSSRule('.search form', 'position: fixed; z-index: 2;');
+    addCSSRule('.daily_best_posts', 'margin-top: 2em;');
 
     /* White list to always show images */
     addCSSRule('.spoiler_text img', 'display: block !important;');
