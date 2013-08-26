@@ -100,6 +100,38 @@ function karmaCounter() {
     xmlhttp.open("GET",'/api/profile/' + userBlock,true);
     xmlhttp.send();
 }
+/* Show tracker updates */
+function trackerUpdates() {
+
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.responseType = 'document';
+var userpanelTop = document.querySelectorAll('.userpanel')[0];
+var trackerLink = document.querySelectorAll('.userpanel > .top > a.count')[0];
+trackerLink.href = '#tracker_updates';
+var updates = document.createElement('ul');
+updates.className = 'updates';
+updates.style.display = 'none';
+trackerLink.onclick = function (event) {event.preventDefault(); updates.style.display = (updates.style.display != 'none' ? 'none' : 'block');};
+xmlhttp.onreadystatechange = function() {
+	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		var tracks = xmlhttp.responseXML.querySelectorAll('.tracker_comments > tbody > tr.new');
+		var postTitles = xmlhttp.responseXML.querySelectorAll('.tracker_comments > tbody > tr.new > td.post_title');
+		var commentCounts = xmlhttp.responseXML.querySelectorAll('.tracker_comments > tbody > tr.new > td.comment_count');
+		for (i = 0; i < tracks.length; i++) {
+			var postTitle = postTitles[i];
+			var commentCount = commentCounts[i].firstChild.nextSibling;
+			commentCount.className = 'count';
+			postTitle.appendChild(commentCount);
+			updates.appendChild(postTitle);
+			postTitle.outerHTML = postTitle.outerHTML.replace(/td/g,"li");
+			userpanelTop.appendChild(updates);
+			
+		}
+	}
+}
+xmlhttp.open("GET", '/tracker/', true);
+xmlhttp.send();
+}
 
 /* Main */
 (function(){
@@ -117,6 +149,22 @@ function karmaCounter() {
     var newImgBtn = createBtn('habraimage', '◄ Показать изображения', ' button', 'buttons', function (event) {event.preventDefault(); toggleElements(contentImgs);});
     document.querySelectorAll('.main_menu')[0].appendChild(newImgBtn);
     
+    /* Add buttons to toggle comments visibility */
+    var comments = document.querySelectorAll('.comments_list > .comment_item'),
+        comment, combody;
+    for (var i = 0; i < comments.length; i++) {
+        comment = comments[i];
+        var replies = comment.querySelectorAll('.reply_comments .comment_body');
+        if (replies.length > 0) {
+            combody = getChildrenByClassName(comment, 'comment_body')[0];
+            replylink = getChildrenByClassName(combody, 'reply')[0];
+            if (combody) {
+                var newBtn = createBtn('hidereplies', replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']), ' button', 'buttons', commentsBtnClick);
+                replylink.appendChild(newBtn);
+            }
+        }
+    }
+    
     /* Add private message link */
     for (i = 0; i < infobars.length; i++) {
     var pmLink = createBtn('pmlink', '', ' reply_link', 'container', clickPm);
@@ -129,13 +177,14 @@ function karmaCounter() {
     var userpanelBottom = document.querySelectorAll('.userpanel > .bottom')[0];
     var karmaDescription = document.querySelectorAll('.charge')[0];
     var companyHeader = document.querySelectorAll('#header_mouse_activity')[0];
-
+    
 if (companyHeader == null) {
     if (userpanelBottom != null) {
         userpanelTop.innerHTML += userpanelBottom.innerHTML;
         userpanel.removeChild(userpanelBottom);
         userpanel.removeChild(karmaDescription);
         karmaCounter();
+        trackerUpdates();
     };
     if (userpanelTop == null) {
 	    var top = document.createElement('div');
@@ -165,6 +214,9 @@ if (companyHeader == null) {
     addCSSRule('.search', 'margin-top: -2em;');
     addCSSRule('.search form', 'position: fixed; z-index: 2;');
     addCSSRule('.daily_best_posts', 'margin-top: 2em;');
+    addCSSRule('ul.updates', 'position: fixed; width: 34em; min-height: 4em; max-height: 40em; height: auto !important; overflow-y: scroll;  margin-top: 3.5em; padding: 1em 1em 0px; background: #d3e2f0; border: 1px solid rgba(155, 185, 211, 0.5); border-radius: 6px; z-index: 3;');
+    addCSSRule('span.new', 'color: #2289E2;');
+    addCSSRule('li.post_title', 'margin-bottom: 1em;');
 
     /* White list to always show images */
     addCSSRule('.spoiler_text img', 'display: block !important;');
@@ -173,19 +225,4 @@ if (companyHeader == null) {
     addCSSRule('.post_inner_banner', 'display: none !important;');
     addCSSRule('.banner_special', 'display: none !important;');
 
-    /* Add buttons to toggle comments visibility */
-    var comments = document.querySelectorAll('.comments_list > .comment_item'),
-        comment, combody;
-    for (var i = 0; i < comments.length; i++) {
-        comment = comments[i];
-        var replies = comment.querySelectorAll('.reply_comments .comment_body');
-        if (replies.length > 0) {
-            combody = getChildrenByClassName(comment, 'comment_body')[0];
-            replylink = getChildrenByClassName(combody, 'reply')[0];
-            if (combody) {
-                var newBtn = createBtn('hidereplies', replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']), ' button', 'buttons', commentsBtnClick);
-                replylink.appendChild(newBtn);
-            }
-        }
-    }
 })();
