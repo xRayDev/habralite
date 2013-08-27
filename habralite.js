@@ -101,36 +101,60 @@ function karmaCounter() {
     xmlhttp.send();
 }
 /* Show tracker updates */
-function trackerUpdates() {
-
-var xmlhttp = new XMLHttpRequest();
-xmlhttp.responseType = 'document';
+function trackerUpdates(){
 var userpanelTop = document.querySelectorAll('.userpanel')[0];
 var trackerLink = document.querySelectorAll('.userpanel > .top > a.count')[0];
 trackerLink.href = '#tracker_updates';
 var updates = document.createElement('ul');
 updates.className = 'updates';
 updates.style.display = 'none';
+userpanelTop.appendChild(updates);
 trackerLink.onclick = function (event) {event.preventDefault(); updates.style.display = (updates.style.display != 'none' ? 'none' : 'block');};
+
+function getUpdates(url, getUrl) {
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.responseType = 'document';
 xmlhttp.onreadystatechange = function() {
 	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-		var tracks = xmlhttp.responseXML.querySelectorAll('.tracker_comments > tbody > tr.new');
-		var postTitles = xmlhttp.responseXML.querySelectorAll('.tracker_comments > tbody > tr.new > td.post_title');
-		var commentCounts = xmlhttp.responseXML.querySelectorAll('.tracker_comments > tbody > tr.new > td.comment_count');
-		for (i = 0; i < tracks.length; i++) {
-			var postTitle = postTitles[i];
-			var commentCount = commentCounts[i].firstChild.nextSibling;
-			commentCount.className = 'count';
-			postTitle.appendChild(commentCount);
-			updates.appendChild(postTitle);
-			postTitle.outerHTML = postTitle.outerHTML.replace(/td/g,"li");
-			userpanelTop.appendChild(updates);
-			
+		var tracks = xmlhttp.responseXML.querySelectorAll(url);
+        for (i = 0; i < tracks.length; i++) {
+			var post = tracks[i];
+            post.removeChild(post.firstElementChild);
+			updates.appendChild(post);
+            post.outerHTML = post.outerHTML.replace(/td/g,"li");
 		}
 	}
 }
+xmlhttp.open("GET", getUrl, true);
+xmlhttp.send();
+}
+
+getUpdates('tr.new > td.event_type', '/tracker/subscribers/');
+getUpdates('tr.new > td.mention_type', '/tracker/mentions/');
+
+(function() {
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.responseType = 'document';
+
+xmlhttp.onreadystatechange = function() {
+	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		var tracks = xmlhttp.responseXML.querySelectorAll('tr.new > td.post_title');
+		var commentCounts = xmlhttp.responseXML.querySelectorAll('tr.new > td.comment_count');
+		for (i = 0; i < tracks.length; i++) {
+			var track = tracks[i];
+			var commentCount = commentCounts[i].firstChild.nextSibling;
+			commentCount.className = 'count';
+			track.appendChild(commentCount);
+			updates.appendChild(track);
+			track.outerHTML = track.outerHTML.replace(/td/g,"li");
+			
+		}
+	}
+};
 xmlhttp.open("GET", '/tracker/', true);
 xmlhttp.send();
+})();
+
 }
 
 /* Main */
@@ -216,7 +240,7 @@ if (companyHeader == null) {
     addCSSRule('.daily_best_posts', 'margin-top: 2em;');
     addCSSRule('ul.updates', 'position: fixed; width: 34em; min-height: 4em; max-height: 40em; height: auto !important; overflow-y: scroll;  margin-top: 3.5em; padding: 1em 1em 0px; background: #d3e2f0; border: 1px solid rgba(155, 185, 211, 0.5); border-radius: 6px; z-index: 3;');
     addCSSRule('span.new', 'color: #2289E2;');
-    addCSSRule('li.post_title', 'margin-bottom: 1em;');
+    addCSSRule('li.post_title, li.event_type, li.mention_type', 'margin-bottom: 1em;');
 
     /* White list to always show images */
     addCSSRule('.spoiler_text img', 'display: block !important;');
