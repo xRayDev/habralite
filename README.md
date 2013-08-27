@@ -15,7 +15,7 @@
 * Рекламные блоки всегда скрыты
 
 ###Скриншоты:
-![Screenshot0](http://lite.glebcha.ru/img/tracker.png "обновления трекера")
+![Screenshot0](http://lite.glebcha.ru/img/events_tracker.png "обновления трекера")
 * * *
 ![Screenshot1](http://lite.glebcha.ru/img/userbar.png "юзербар")
 * * *
