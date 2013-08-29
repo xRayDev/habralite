@@ -1,5 +1,4 @@
 /* Adds css rules to specified selector */
-
 function addCSSRule(selector, rules, sheet) {
     sheet = sheet || document.styleSheets[0];
     if (sheet.insertRule) {
@@ -8,14 +7,14 @@ function addCSSRule(selector, rules, sheet) {
         sheet.addRule(selector, rules);
     }
 }
-/* Returns human-friendly declension of provided numbers */
 
+/* Returns human-friendly declension of provided numbers */
 function declOfNum(number, titles) {
     cases = [2, 0, 1, 1, 1, 2];
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
 }
-/* Return chidren nodes of an element with a specified class name */
 
+/* Return chidren nodes of an element with a specified class name */
 function getChildrenByClassName(element, className) {
     var children = [];
     for (var i = 0; i < element.childNodes.length; i++) {
@@ -25,16 +24,16 @@ function getChildrenByClassName(element, className) {
     }
     return children;
 }
-/* Hide single nodeList */
 
+/* Hide single nodeList */
 function hideNode(nodes) {
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
         node.style.display = 'none';
     }
 }
-/* Hide nodeLists provided as array */
 
+/* Hide nodeLists provided as array */
 function hideNodes(nodes) {
     if (Object.prototype.toString.call(nodes) === '[object Array]') {
         for (var i = 0; i < nodes.length; i++) {
@@ -44,16 +43,16 @@ function hideNodes(nodes) {
         hideNode(nodes);
     }
 }
-/* Toggle visibility of provided elements */
 
+/* Toggle visibility of provided elements */
 function toggleElements(elements) {
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         element.style.display = (element.style.display != 'none' ? 'none' : 'block');
     }
 }
-/* Create a button ( span > a ) */
 
+/* Create a button ( span > a ) */
 function createBtn(className, value, btnClass, containerClass, onclick) {
     className = className || '';
     value = value || '';
@@ -69,23 +68,23 @@ function createBtn(className, value, btnClass, containerClass, onclick) {
     newContainer.appendChild(newBtn);
     return newContainer;
 }
-/* Replies button event handler */
 
+/* Replies button event handler */
 function commentsBtnClick(event) {
     event.preventDefault();
     var btn = event.currentTarget;
     var comments = btn.parentElement.parentElement.parentElement.parentElement.querySelectorAll('.reply_comments');
     toggleElements(comments);
 }
-/* Private message link event handler */
 
+/* Private message link event handler */
 function clickPm(event) {
     event.preventDefault();
     var username = event.target.parentElement.parentElement.parentElement.querySelector('a.username').innerText;
     window.location.pathname = '/conversations/' + username;
 }
-/* Get user info from XML */
 
+/* Get user info from XML */
 function karmaCounter() {
 
     var xmlhttp = new XMLHttpRequest();
@@ -109,69 +108,71 @@ function karmaCounter() {
     xmlhttp.open("GET", '/api/profile/' + userBlock, true);
     xmlhttp.send();
 }
-/* Show tracker updates */
 
+/* Show tracker updates */
 function trackerUpdates() {
     var userpanelTop = document.querySelectorAll('.userpanel')[0];
     var trackerLink = document.querySelectorAll('.userpanel > .top > a.count')[0];
-    trackerLink.href = '#tracker_updates';
-    var updates = document.createElement('ul');
-    updates.className = 'updates';
-    updates.style.display = 'none';
-    userpanelTop.appendChild(updates);
-    trackerLink.onclick = function (event) {
-        event.preventDefault();
-        updates.style.display = (updates.style.display != 'none' ? 'none' : 'block');
-    };
-
-    function getUpdates(url, getUrl) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.responseType = 'document';
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var tracks = xmlhttp.responseXML.querySelectorAll(url);
-                for (i = 0; i < tracks.length; i++) {
-                    var post = tracks[i];
-                    post.removeChild(post.firstElementChild);
-                    updates.appendChild(post);
-                    post.outerHTML = post.outerHTML.replace(/td/g, "li");
-                }
-            }
-        }
-        xmlhttp.open("GET", getUrl, true);
-        xmlhttp.send();
-    }
-
-    getUpdates('tr.new > td.event_type', '/tracker/subscribers/');
-    getUpdates('tr.new > td.mention_type', '/tracker/mentions/');
-
-    (function () {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.responseType = 'document';
-
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var tracks = xmlhttp.responseXML.querySelectorAll('tr.new > td.post_title');
-                var commentCounts = xmlhttp.responseXML.querySelectorAll('tr.new > td.comment_count');
-                for (i = 0; i < tracks.length; i++) {
-                    var track = tracks[i];
-                    var commentCount = commentCounts[i].firstChild.nextSibling;
-                    commentCount.className = 'count';
-                    track.appendChild(commentCount);
-                    updates.appendChild(track);
-                    track.outerHTML = track.outerHTML.replace(/td/g, "li");
-
-                }
-            }
+    if (trackerLink) {
+        trackerLink.href = '#tracker_updates';
+        var updates = document.createElement('ul');
+        updates.className = 'updates';
+        updates.style.display = 'none';
+        userpanelTop.appendChild(updates);
+        trackerLink.onclick = function (event) {
+            event.preventDefault();
+            updates.style.display = (updates.style.display != 'none' ? 'none' : 'block');
         };
-        xmlhttp.open("GET", '/tracker/', true);
-        xmlhttp.send();
-    })();
 
+        function getUpdates(url, getUrl) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.responseType = 'document';
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var tracks = xmlhttp.responseXML.querySelectorAll(url);
+                    for (i = 0; i < tracks.length; i++) {
+                        var post = tracks[i];
+                        post.removeChild(post.firstElementChild);
+                        updates.appendChild(post);
+                        post.outerHTML = post.outerHTML.replace(/td/g, "li");
+                    }
+                }
+            }
+            xmlhttp.open("GET", getUrl, true);
+            xmlhttp.send();
+        }
+
+        getUpdates('tr.new > td.event_type', '/tracker/subscribers/');
+        getUpdates('tr.new > td.mention_type', '/tracker/mentions/');
+
+        (function () {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.responseType = 'document';
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var tracks = xmlhttp.responseXML.querySelectorAll('tr.new > td.post_title');
+                    var commentCounts = xmlhttp.responseXML.querySelectorAll('tr.new > td.comment_count');
+                    for (i = 0; i < tracks.length; i++) {
+                        var track = tracks[i];
+                        var commentCount = commentCounts[i].firstChild.nextSibling;
+                        commentCount.className = 'count';
+                        track.appendChild(commentCount);
+                        updates.appendChild(track);
+                        track.outerHTML = track.outerHTML.replace(/td/g, "li");
+
+                    }
+                }
+            };
+            xmlhttp.open("GET", '/tracker/', true);
+            xmlhttp.send();
+        })();
+    }
 }
 
 /* Main */
 (function () {
+    
     /* Set of {NodeList} elements to operate with */
     var allReplies = document.querySelectorAll('.reply_comments');
     var sidebarImgs = document.querySelectorAll('.sidebar_right > .banner_300x500, .sidebar_right > #htmlblock_placeholder');
