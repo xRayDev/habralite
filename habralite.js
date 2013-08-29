@@ -197,7 +197,7 @@ function trackerUpdates() {
         var replies = comment.querySelectorAll('.reply_comments .comment_body');
         if (replies.length > 0) {
             combody = getChildrenByClassName(comment, 'comment_body')[0];
-            replylink = getChildrenByClassName(combody, 'reply')[0];
+            replylink = getChildrenByClassName(combody, 'reply')[0] || getChildrenByClassName(combody, 'author_banned')[0];
             if (combody) {
                 var newBtn = createBtn('hidereplies', replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']), ' button', 'buttons', commentsBtnClick);
                 replylink.appendChild(newBtn);
