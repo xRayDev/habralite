@@ -89,15 +89,15 @@ function karmaCounter() {
 
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.overrideMimeType('text/xml');
-    var userBlock = document.querySelectorAll('.top > .username')[0].innerText;
-    var userpanelTop = document.querySelectorAll('.userpanel > .top')[0];
+    var userBlock = document.querySelector('.top > .username').innerText;
+    var userpanelTop = document.querySelector('.userpanel > .top');
     var karmaCharge = document.createElement('a');
     karmaCharge.href = 'http://habrahabr.ru/users/' + userBlock;
     karmaCharge.className = 'count karma';
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var counter = xmlhttp.responseXML.querySelectorAll('karma')[0].firstChild;
-            var rating = xmlhttp.responseXML.querySelectorAll('rating')[0].firstChild;
+            var counter = xmlhttp.responseXML.querySelector('karma').firstChild;
+            var rating = xmlhttp.responseXML.querySelector('rating').firstChild;
             karmaCharge.innerText = 'карма ';
             karmaCharge.appendChild(counter);
             karmaCharge.innerText += ', рейтинг ';
@@ -111,8 +111,8 @@ function karmaCounter() {
 
 /* Show tracker updates */
 function trackerUpdates() {
-    var userpanelTop = document.querySelectorAll('.userpanel')[0];
-    var trackerLink = document.querySelectorAll('.userpanel > .top > a.count')[0];
+    var userpanelTop = document.querySelector('.userpanel');
+    var trackerLink = document.querySelector('.userpanel > .top > a.count');
     if (trackerLink) {
         trackerLink.href = '#tracker_updates';
         var updates = document.createElement('ul');
@@ -188,7 +188,7 @@ function trackerUpdates() {
         event.preventDefault();
         toggleElements(contentImgs);
     });
-    document.querySelectorAll('.main_menu')[0].appendChild(newImgBtn);
+    document.querySelector('.main_menu').appendChild(newImgBtn);
 
     /* Add buttons to toggle comments visibility */
     var comments = document.querySelectorAll('.comments_list > .comment_item'),
@@ -213,11 +213,11 @@ function trackerUpdates() {
     }
 
     /* Define userpanel */
-    var userpanel = document.querySelectorAll('.userpanel')[0];
-    var userpanelTop = document.querySelectorAll('.userpanel > .top')[0];
-    var userpanelBottom = document.querySelectorAll('.userpanel > .bottom')[0];
-    var karmaDescription = document.querySelectorAll('.charge')[0];
-    var companyHeader = document.querySelectorAll('#header_mouse_activity')[0];
+    var userpanel = document.querySelector('.userpanel');
+    var userpanelTop = document.querySelector('.userpanel > .top');
+    var userpanelBottom = document.querySelector('.userpanel > .bottom');
+    var karmaDescription = document.querySelector('.charge');
+    var companyHeader = document.querySelector('#header_mouse_activity');
 
     if (companyHeader == null) {
         if (userpanelBottom != null) {
