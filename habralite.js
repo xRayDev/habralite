@@ -1,4 +1,8 @@
+var userpanel = document.querySelector('.userpanel');
+var userpanelTop = document.querySelector('.userpanel > .top');
+
 /* Adds css rules to specified selector */
+
 function addCSSRule(selector, rules, sheet) {
     sheet = sheet || document.styleSheets[0];
     if (sheet.insertRule) {
@@ -9,12 +13,14 @@ function addCSSRule(selector, rules, sheet) {
 }
 
 /* Returns human-friendly declension of provided numbers */
+
 function declOfNum(number, titles) {
     cases = [2, 0, 1, 1, 1, 2];
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
 }
 
 /* Return chidren nodes of an element with a specified class name */
+
 function getChildrenByClassName(element, className) {
     var children = [];
     for (var i = 0; i < element.childNodes.length; i++) {
@@ -26,6 +32,7 @@ function getChildrenByClassName(element, className) {
 }
 
 /* Hide single nodeList */
+
 function hideNode(nodes) {
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
@@ -34,6 +41,7 @@ function hideNode(nodes) {
 }
 
 /* Hide nodeLists provided as array */
+
 function hideNodes(nodes) {
     if (Object.prototype.toString.call(nodes) === '[object Array]') {
         for (var i = 0; i < nodes.length; i++) {
@@ -45,6 +53,7 @@ function hideNodes(nodes) {
 }
 
 /* Toggle visibility of provided elements */
+
 function toggleElements(elements) {
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
@@ -53,6 +62,7 @@ function toggleElements(elements) {
 }
 
 /* Create a button ( span > a ) */
+
 function createBtn(className, value, btnClass, containerClass, onclick) {
     className = className || '';
     value = value || '';
@@ -70,6 +80,7 @@ function createBtn(className, value, btnClass, containerClass, onclick) {
 }
 
 /* Replies button event handler */
+
 function commentsBtnClick(event) {
     event.preventDefault();
     var btn = event.currentTarget;
@@ -78,6 +89,7 @@ function commentsBtnClick(event) {
 }
 
 /* Private message link event handler */
+
 function clickPm(event) {
     event.preventDefault();
     var username = event.target.parentElement.parentElement.parentElement.querySelector('a.username').innerText;
@@ -85,12 +97,12 @@ function clickPm(event) {
 }
 
 /* Get user info from XML */
+
 function karmaCounter() {
 
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.overrideMimeType('text/xml');
     var userBlock = document.querySelector('.top > .username').innerText;
-    var userpanelTop = document.querySelector('.userpanel > .top');
     var karmaCharge = document.createElement('a');
     karmaCharge.href = 'http://habrahabr.ru/users/' + userBlock;
     karmaCharge.className = 'count karma';
@@ -110,15 +122,15 @@ function karmaCounter() {
 }
 
 /* Show tracker updates */
+
 function trackerUpdates() {
-    var userpanelTop = document.querySelector('.userpanel');
     var trackerLink = document.querySelector('.userpanel > .top > a.count');
     if (trackerLink) {
         trackerLink.href = '#tracker_updates';
         var updates = document.createElement('ul');
         updates.className = 'updates';
         updates.style.display = 'none';
-        userpanelTop.appendChild(updates);
+        userpanel.appendChild(updates);
         trackerLink.onclick = function (event) {
             event.preventDefault();
             updates.style.display = (updates.style.display != 'none' ? 'none' : 'block');
@@ -170,38 +182,118 @@ function trackerUpdates() {
     }
 }
 
+/* Control local storage values */
+var setLocStor = function (name, hh) {
+    if (!localStorage) return;
+    localStorage['HabraLite_' + name] = JSON.stringify({
+        h: hh
+    });
+},
+    getLocStor = function (name) {
+        return (JSON.parse(localStorage && localStorage['HabraLite_' + name] || '{}')).h;
+    },
+    removeLocStor = function (name) {
+        localStorage.removeItem('HabraLite_' + name);
+    };
+
+/* Settings */
+
+function scriptSettings() {
+    function createInput(typeName, name, valueName, textLabel) {
+        var listElement = document.createElement('li');
+        var inputElement = document.createElement('input');
+        inputElement.type = typeName;
+        inputElement.className = 'settings';
+        inputElement.name = name;
+        inputElement.value = valueName;
+        listElement.appendChild(inputElement);
+        listElement.innerHTML += textLabel;
+        return listElement;
+    }
+
+    var settingsBlock = document.createElement('ul');
+    settingsBlock.className = 'hl-settings updates';
+    settingsBlock.style.display = 'none';
+    var settingsImages = createInput('checkbox', 'images', 'disabled', ' отключить скрытие изображений');
+    var settingsComments = createInput('checkbox', 'comments', 'disabled', ' отключить группировку ответов');
+    settingsBlock.appendChild(settingsImages);
+    settingsBlock.appendChild(settingsComments);
+    userpanel.appendChild(settingsBlock);
+
+    var settingsBtn = document.createElement('a');
+    settingsBtn.className = 'btn-settings';
+    settingsBtn.href = '#habralite-settings';
+    userpanelTop.appendChild(settingsBtn);
+    settingsBtn.onclick = function (event) {
+        event.preventDefault();
+        settingsBlock.style.display = (settingsBlock.style.display != 'none' ? 'none' : 'block');
+    }
+
+    var checkboxes = document.querySelectorAll('input.settings');
+    for (var i = 0; i < checkboxes.length; i++) {
+        var checkbox = checkboxes[i];
+        var locStorValue = getLocStor(checkbox.name);
+        if (locStorValue === 'enabled') {
+            checkbox.checked = true;
+        }
+        if (locStorValue === 'disabled') {
+            checkbox.checked === false;
+        }
+        checkbox.onclick = function (event) {
+            if (this.checked) {
+                this.value = 'enabled';
+            } else {
+                this.value = 'disabled';
+            }
+            setLocStor(this.name, this.value);
+        };
+    }
+
+}
+
 /* Main */
 (function () {
-    
+
     /* Set of {NodeList} elements to operate with */
     var allReplies = document.querySelectorAll('.reply_comments');
-    var sidebarImgs = document.querySelectorAll('.sidebar_right > .banner_300x500, .sidebar_right > #htmlblock_placeholder');
     var contentImgs = document.querySelectorAll('.content img, .message img');
     var userBanned = document.querySelectorAll('.author_banned');
     var infobars = document.querySelectorAll('.to_chidren');
+    var imagesOption = getLocStor('images');
+    var commentsOption = getLocStor('comments');
 
-    /* Hide all images and nested replies by default */
-    hideNodes([allReplies, sidebarImgs, contentImgs, userBanned]);
+    if (imagesOption !== 'enabled') {
 
-    /* Add button to toggle images visibility */
-    var newImgBtn = createBtn('habraimage', '◄ Показать изображения', ' button', 'buttons', function (event) {
-        event.preventDefault();
-        toggleElements(contentImgs);
-    });
-    document.querySelector('.main_menu').appendChild(newImgBtn);
+        /* Hide all images by default */
+        hideNodes(contentImgs);
 
-    /* Add buttons to toggle comments visibility */
-    var comments = document.querySelectorAll('.comments_list > .comment_item'),
-        comment, combody;
-    for (var i = 0; i < comments.length; i++) {
-        comment = comments[i];
-        var replies = comment.querySelectorAll('.reply_comments .comment_body');
-        if (replies.length > 0) {
-            combody = getChildrenByClassName(comment, 'comment_body')[0];
-            replylink = getChildrenByClassName(combody, 'reply')[0] || getChildrenByClassName(combody, 'author_banned')[0];
-            if (combody) {
-                var newBtn = createBtn('hidereplies', replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']), ' button', 'buttons', commentsBtnClick);
-                replylink.appendChild(newBtn);
+        /* Add button to toggle images visibility */
+        var newImgBtn = createBtn('habraimage', '◄ Показать изображения', ' button', 'buttons', function (event) {
+            event.preventDefault();
+            toggleElements(contentImgs);
+        });
+        document.querySelector('.main_menu').appendChild(newImgBtn);
+
+    }
+
+    if (commentsOption !== 'enabled') {
+
+        /* Hide all nested replies by default */
+        hideNodes([allReplies, userBanned]);
+
+        /* Add buttons to toggle comments visibility */
+        var comments = document.querySelectorAll('.comments_list > .comment_item'),
+            comment, combody;
+        for (var i = 0; i < comments.length; i++) {
+            comment = comments[i];
+            var replies = comment.querySelectorAll('.reply_comments .comment_body');
+            if (replies.length > 0) {
+                combody = getChildrenByClassName(comment, 'comment_body')[0];
+                replylink = getChildrenByClassName(combody, 'reply')[0] || getChildrenByClassName(combody, 'author_banned')[0];
+                if (combody) {
+                    var newBtn = createBtn('hidereplies', replies.length + declOfNum(replies.length, [' ответ', ' ответа', ' ответов']), ' button', 'buttons', commentsBtnClick);
+                    replylink.appendChild(newBtn);
+                }
             }
         }
     }
@@ -213,8 +305,6 @@ function trackerUpdates() {
     }
 
     /* Define userpanel */
-    var userpanel = document.querySelector('.userpanel');
-    var userpanelTop = document.querySelector('.userpanel > .top');
     var userpanelBottom = document.querySelector('.userpanel > .bottom');
     var karmaDescription = document.querySelector('.charge');
     var companyHeader = document.querySelector('#header_mouse_activity');
@@ -226,6 +316,7 @@ function trackerUpdates() {
             userpanel.removeChild(karmaDescription);
             karmaCounter();
             trackerUpdates();
+            scriptSettings();
         };
         if (userpanelTop == null) {
             var top = document.createElement('div');
@@ -248,16 +339,23 @@ function trackerUpdates() {
     /* User panel styling */
     addCSSRule('.logo', 'display: none !important;');
     addCSSRule('.main_menu', 'margin-top: 1em;');
-    addCSSRule('.userpanel .top', 'width: 98em; position: fixed;  z-index: 1; background-image: -webkit-linear-gradient(top, #d3e2f0, #9bb9d3); background-image: -moz-linear-gradient(top, #d3e2f0, #9bb9d3); background-image: linear-gradient(top, #d3e2f0, #9bb9d3); top: 0; padding: 1em; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; opacity: 0.8;');
+    addCSSRule('.userpanel .top', 'width: 98em; position: fixed;  z-index: 1; background-image: -webkit-linear-gradient(top, #d3e2f0, #9bb9d3);' + '\r\n' + 
+                'background-image: -moz-linear-gradient(top, #d3e2f0, #9bb9d3); background-image: linear-gradient(top, #d3e2f0, #9bb9d3); top: 0; padding: 1em;' + '\r\n' + 
+                'border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; opacity: 0.8;');
     addCSSRule('.userpanel a', 'font-size: 14px; text-decoration: none; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);');
     addCSSRule('a.count', ' background: rgba(255,255,255, 0.5); padding: 3px; border-radius: 4px;');
     addCSSRule('#header .userpanel a.username', 'margin-right: 1em !important;');
     addCSSRule('.search', 'margin-top: -2em;');
     addCSSRule('.search form', 'position: fixed; z-index: 2;');
     addCSSRule('.daily_best_posts', 'margin-top: 2em;');
-    addCSSRule('ul.updates', 'position: fixed; width: 34em; min-height: 4em; max-height: 40em; height: auto !important; overflow-y: scroll;  margin-top: 3.5em; padding: 1em 1em 0px; background: #d3e2f0; border: 1px solid rgba(155, 185, 211, 0.5); border-radius: 6px; z-index: 3;');
+    addCSSRule('ul.updates', 'position: fixed; width: 34em; min-height: 4em; max-height: 40em; height: auto !important; overflow-y: scroll; margin-top: 3.5em;' + '\r\n' + 
+                'padding: 1em 1em 0px; background: #d3e2f0; border: 1px solid rgba(155, 185, 211, 0.5); border-radius: 6px; z-index: 3;');
+    addCSSRule('ul.hl-settings', 'font-size: 14px; color: #999; text-decoration: none; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8); width: 18em !important;' + '\r\n' + 
+                'margin-top: 3em !important; margin-left: 41.5em;');
     addCSSRule('span.new', 'color: #2289E2;');
     addCSSRule('li.post_title, li.event_type, li.mention_type', 'margin-bottom: 1em;');
+    addCSSRule('.btn-settings', 'vertical-align: text-bottom; display:inline-block; width:16px;height:16px;' + '\r\n' +  
+                'background: url(/images/sidebar/new_companies.btn.png) no-repeat 0px 0px;cursor: pointer;')
 
     /* White list to always show images */
     addCSSRule('.spoiler_text img', 'display: block !important;');
@@ -265,5 +363,7 @@ function trackerUpdates() {
     /* Black list to always hide images */
     addCSSRule('.post_inner_banner', 'display: none !important;');
     addCSSRule('.banner_special', 'display: none !important;');
+    addCSSRule('.sidebar_right > .banner_300x500', 'display: none !important;');
+    addCSSRule('.sidebar_right > #htmlblock_placeholder', 'display: none !important;');
 
 })();
