@@ -5,6 +5,7 @@
 
 ###Что умеет в текущем релизе:
 
+* Меню настроек расширения для управления его функционалом;
 * Пользовательская панель с отображением текущих кармы и рейтинга;
 * Блок обновлений трекера можно показать/скрыть по клику на число обновлений в пользовательской панели;
 * Кнопка, раскрывающая ответы к комментарию и показывающая их число
@@ -17,15 +18,17 @@
 ###Скриншоты:
 ![Screenshot0](http://lite.glebcha.ru/img/events_tracker.png "обновления трекера")
 * * *
-![Screenshot1](http://lite.glebcha.ru/img/userbar.png "юзербар")
+![Screenshot1](http://lite.glebcha.ru/img/settings.png "обновления трекера")
 * * *
-![Screenshot2](http://lite.glebcha.ru/img/pm.png "отправка личного сообщения")
+![Screenshot2](http://lite.glebcha.ru/img/userbar.png "юзербар")
 * * *
-![Screenshot3](http://lite.glebcha.ru/img/wascomments.png "комментарии - до")
+![Screenshot3](http://lite.glebcha.ru/img/pm.png "отправка личного сообщения")
 * * *
-![Screenshot4](http://lite.glebcha.ru/img/iscomments.png "комментарии - после")
+![Screenshot4](http://lite.glebcha.ru/img/wascomments.png "комментарии - до")
 * * *
-![Screenshot5](http://lite.glebcha.ru/img/wasimg.png "изображения - до")
+![Screenshot5](http://lite.glebcha.ru/img/iscomments.png "комментарии - после")
 * * *
-![Screenshot6](http://lite.glebcha.ru/img/isimg.png "изображения - после")
+![Screenshot6](http://lite.glebcha.ru/img/wasimg.png "изображения - до")
+* * *
+![Screenshot7](http://lite.glebcha.ru/img/isimg.png "изображения - после")
 
