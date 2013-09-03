@@ -2,7 +2,6 @@ var userpanel = document.querySelector('.userpanel');
 var userpanelTop = document.querySelector('.userpanel > .top');
 
 /* Adds css rules to specified selector */
-
 function addCSSRule(selector, rules, sheet) {
     sheet = sheet || document.styleSheets[0];
     if (sheet.insertRule) {
@@ -13,14 +12,12 @@ function addCSSRule(selector, rules, sheet) {
 }
 
 /* Returns human-friendly declension of provided numbers */
-
 function declOfNum(number, titles) {
     cases = [2, 0, 1, 1, 1, 2];
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
 }
 
 /* Return chidren nodes of an element with a specified class name */
-
 function getChildrenByClassName(element, className) {
     var children = [];
     for (var i = 0; i < element.childNodes.length; i++) {
@@ -32,7 +29,6 @@ function getChildrenByClassName(element, className) {
 }
 
 /* Hide single nodeList */
-
 function hideNode(nodes) {
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
@@ -41,7 +37,6 @@ function hideNode(nodes) {
 }
 
 /* Hide nodeLists provided as array */
-
 function hideNodes(nodes) {
     if (Object.prototype.toString.call(nodes) === '[object Array]') {
         for (var i = 0; i < nodes.length; i++) {
@@ -53,7 +48,6 @@ function hideNodes(nodes) {
 }
 
 /* Toggle visibility of provided elements */
-
 function toggleElements(elements) {
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
@@ -62,7 +56,6 @@ function toggleElements(elements) {
 }
 
 /* Create a button ( span > a ) */
-
 function createBtn(className, value, btnClass, containerClass, onclick) {
     className = className || '';
     value = value || '';
@@ -80,7 +73,6 @@ function createBtn(className, value, btnClass, containerClass, onclick) {
 }
 
 /* Replies button event handler */
-
 function commentsBtnClick(event) {
     event.preventDefault();
     var btn = event.currentTarget;
@@ -89,7 +81,6 @@ function commentsBtnClick(event) {
 }
 
 /* Private message link event handler */
-
 function clickPm(event) {
     event.preventDefault();
     var username = event.target.parentElement.parentElement.parentElement.querySelector('a.username').innerText;
@@ -97,7 +88,6 @@ function clickPm(event) {
 }
 
 /* Get user info from XML */
-
 function karmaCounter() {
 
     var xmlhttp = new XMLHttpRequest();
@@ -121,8 +111,30 @@ function karmaCounter() {
     xmlhttp.send();
 }
 
-/* Show tracker updates */
+/* Get user's info from XML on click */
+function usersKarma(varInfo) {
+    var info = varInfo;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.overrideMimeType('text/xml');
+    var username = info.querySelector('.username').innerText;
+    var userKarma = document.createElement('a');
+    userKarma.className = 'users_karma';
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var counter = xmlhttp.responseXML.querySelector('karma').firstChild;
+            var rating = xmlhttp.responseXML.querySelector('rating').firstChild;
+            userKarma.innerText = 'карма ';
+            userKarma.appendChild(counter);
+            userKarma.innerText += ', рейтинг ';
+            userKarma.appendChild(rating);
+            info.insertBefore(userKarma, info.lastElementChild);
+        }
+    }
+    xmlhttp.open("GET", '/api/profile/' + username, true);
+    xmlhttp.send();
+}
 
+/* Show tracker updates */
 function trackerUpdates() {
     var trackerLink = document.querySelector('.userpanel > .top > a.count');
     if (trackerLink) {
@@ -197,7 +209,6 @@ var setLocStor = function (name, hh) {
     };
 
 /* Settings */
-
 function scriptSettings() {
     function createInput(typeName, name, valueName, textLabel) {
         var listElement = document.createElement('li');
@@ -216,8 +227,10 @@ function scriptSettings() {
     settingsBlock.style.display = 'none';
     var settingsImages = createInput('checkbox', 'images', 'disabled', ' отключить скрытие изображений');
     var settingsComments = createInput('checkbox', 'comments', 'disabled', ' отключить группировку ответов');
+    var settingsKarma = createInput('checkbox', 'karma', 'disabled', ' отключить карму юзера по клику');
     settingsBlock.appendChild(settingsImages);
     settingsBlock.appendChild(settingsComments);
+    settingsBlock.appendChild(settingsKarma);
     userpanel.appendChild(settingsBlock);
 
     var settingsBtn = document.createElement('a');
@@ -254,13 +267,15 @@ function scriptSettings() {
 /* Main */
 (function () {
 
-    /* Set of {NodeList} elements to operate with */
+    /* Set of elements to operate with */
     var allReplies = document.querySelectorAll('.reply_comments');
     var contentImgs = document.querySelectorAll('.content img, .message img');
     var userBanned = document.querySelectorAll('.author_banned');
     var infobars = document.querySelectorAll('.to_chidren');
     var imagesOption = getLocStor('images');
     var commentsOption = getLocStor('comments');
+    var karmaOption = getLocStor('karma');
+    var infoPanels = document.querySelectorAll('.info');
 
     if (imagesOption !== 'enabled') {
 
@@ -298,8 +313,20 @@ function scriptSettings() {
         }
     }
 
+    if (karmaOption !== 'enabled') {
+
+        /* Show user's karma on his info panel click  */
+        for (var i = 0; i < infoPanels.length; i++) {
+            var infoPanel = infoPanels[i];
+            infoPanel.onclick = function (event) {
+                event.preventDefault();
+                usersKarma(this);
+            }
+        }
+    }
+
     /* Add private message link */
-    for (i = 0; i < infobars.length; i++) {
+    for (var i = 0; i < infobars.length; i++) {
         var pmLink = createBtn('pmlink', '', ' reply_link', 'container', clickPm);
         infobars[i].appendChild(pmLink);
     }
@@ -339,23 +366,26 @@ function scriptSettings() {
     /* User panel styling */
     addCSSRule('.logo', 'display: none !important;');
     addCSSRule('.main_menu', 'margin-top: 1em;');
-    addCSSRule('.userpanel .top', 'width: 98em; position: fixed;  z-index: 1; background-image: -webkit-linear-gradient(top, #d3e2f0, #9bb9d3);' + '\r\n' + 
-                'background-image: -moz-linear-gradient(top, #d3e2f0, #9bb9d3); background-image: linear-gradient(top, #d3e2f0, #9bb9d3); top: 0; padding: 1em;' + '\r\n' + 
-                'border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; opacity: 0.8;');
+    addCSSRule('.userpanel .top', 'width: 98em; position: fixed;  z-index: 1; background-image: -webkit-linear-gradient(top, #d3e2f0, #9bb9d3);' + '\r\n' +
+        'background-image: -moz-linear-gradient(top, #d3e2f0, #9bb9d3); background-image: linear-gradient(top, #d3e2f0, #9bb9d3); top: 0; padding: 1em;' + '\r\n' +
+        'border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; opacity: 0.8;');
     addCSSRule('.userpanel a', 'font-size: 14px; text-decoration: none; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);');
-    addCSSRule('a.count', ' background: rgba(255,255,255, 0.5); padding: 3px; border-radius: 4px;');
+    addCSSRule('a.count', 'background: rgba(255,255,255, 0.5); padding: 3px; border-radius: 4px;');
     addCSSRule('#header .userpanel a.username', 'margin-right: 1em !important;');
     addCSSRule('.search', 'margin-top: -2em;');
     addCSSRule('.search form', 'position: fixed; z-index: 2;');
     addCSSRule('.daily_best_posts', 'margin-top: 2em;');
-    addCSSRule('ul.updates', 'position: fixed; width: 34em; min-height: 4em; max-height: 40em; height: auto !important; overflow-y: scroll; margin-top: 3.5em;' + '\r\n' + 
-                'padding: 1em 1em 0px; background: #d3e2f0; border: 1px solid rgba(155, 185, 211, 0.5); border-radius: 6px; z-index: 3;');
-    addCSSRule('ul.hl-settings', 'font-size: 14px; color: #999; text-decoration: none; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8); width: 18em !important;' + '\r\n' + 
-                'margin-top: 3em !important; margin-left: 41.5em;');
+    addCSSRule('ul.updates', 'position: fixed; width: 34em; min-height: 4em; max-height: 40em; height: auto !important; overflow-y: scroll; margin-top: 3.5em;' + '\r\n' +
+        'padding: 1em 1em 0px; background: #d3e2f0; border: 1px solid rgba(155, 185, 211, 0.5); border-radius: 6px; z-index: 3;');
+    addCSSRule('ul.updates li', 'margin-bottom: 1em;');
+    addCSSRule('ul.hl-settings', 'font-size: 14px; color: #999; text-decoration: none; text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8); width: 18em !important;' + '\r\n' +
+        'margin-top: 3em !important; margin-left: 41.5em;');
     addCSSRule('span.new', 'color: #2289E2;');
     addCSSRule('li.post_title, li.event_type, li.mention_type', 'margin-bottom: 1em;');
-    addCSSRule('.btn-settings', 'vertical-align: text-bottom; display:inline-block; width:16px;height:16px;' + '\r\n' +  
-                'background: url(/images/sidebar/new_companies.btn.png) no-repeat 0px 0px;cursor: pointer;')
+    addCSSRule('.btn-settings', 'vertical-align: text-bottom; display:inline-block; width:16px;height:16px;' + '\r\n' +
+        'background: url(/images/sidebar/new_companies.btn.png) no-repeat 0px 0px;cursor: pointer;');
+    addCSSRule('.users_karma', 'display: inline-block; text-decoration: none; margin-left: 1em; padding: 2px; font-size: 11px;' + '\r\n' +
+        'background: rgba(211, 226, 240, 0.5);  border-radius: 4px;text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);');
 
     /* White list to always show images */
     addCSSRule('.spoiler_text img', 'display: block !important;');
