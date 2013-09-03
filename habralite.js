@@ -275,7 +275,7 @@ function scriptSettings() {
     var imagesOption = getLocStor('images');
     var commentsOption = getLocStor('comments');
     var karmaOption = getLocStor('karma');
-    var infoPanels = document.querySelectorAll('.info');
+    var infoPanels = document.querySelectorAll('.comment_body > .info');
 
     if (imagesOption !== 'enabled') {
 
